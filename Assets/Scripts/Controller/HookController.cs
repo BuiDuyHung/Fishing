@@ -9,7 +9,15 @@ public class HookController : MonoBehaviour
     public CinemachineVirtualCamera virtualCamera2;
     public float speed;
     public MeshRenderer climb;
+
     protected bool isMoving = false;
+    private bool isAttached = false;
+
+    public GameObject shoe;
+    public GameObject bag;
+    public GameObject watch;
+    public GameObject hat;
+    
 
     void Start()
     {
@@ -24,21 +32,31 @@ public class HookController : MonoBehaviour
             {
                 StartCoroutine(MovePosition());
             }
+        }
+        
+    }
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+
+        if (!isAttached && collision.CompareTag("shoe"))
+        {
+            bag.SetActive(false);
+            watch.SetActive(false);
+            hat.SetActive(false);
+
+            collision.transform.SetParent(transform);
+            isAttached = true;
+            StartCoroutine(movePositionShoe());
             
         }
 
-
-    }
-
-    public void hookMoveShoe()
-    {
-        Debug.Log("click");
-        if (Input.GetMouseButtonDown(0) && climb.enabled == true)
+        if (!isAttached && collision.CompareTag("bag"))
         {
-            movePositionShoe();
+
         }
     }
+
 
     public virtual IEnumerator MovePosition()
     {
@@ -50,5 +68,19 @@ public class HookController : MonoBehaviour
         yield return new WaitForSeconds(2f);
     }
 
-    
+    public virtual IEnumerator movePositionBag()
+    {
+        yield return new WaitForSeconds(2f);
+    }
+
+    public virtual IEnumerator movePositionWatch()
+    {
+        yield return new WaitForSeconds(2f);
+    }
+
+    public virtual IEnumerator movePositionHat()
+    {
+        yield return new WaitForSeconds(2f);
+    }
+
 }
