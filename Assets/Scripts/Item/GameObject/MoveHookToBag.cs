@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class MoveHookToBag : HookController
 {
-    public Vector3 bagPos1;
-    public Vector3 bagPos2;
-    public GameObject hook;
+    public AudioSource src;
+    public AudioClip BagSound;
 
     private void OnMouseDown()
     {
@@ -16,22 +15,43 @@ public class MoveHookToBag : HookController
     public override IEnumerator movePositionBag()
     {
         isMoving = true;
-        while (hook.transform.position != bagPos1)
+        yield return new WaitForSeconds(0.2f);
+
+        while (objectHook.transform.position != bagPosition2)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, bagPos1, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, bagPosition2, step);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+        src.clip = soundHook;
+        src.Play();
+
+        while (objectHook.transform.position != dargPositionBag1)
+        {
+            float step = speed * Time.deltaTime;
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dargPositionBag1, step);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.5f);
-        isMoving = true;
+        src.clip = BagSound;
+        src.Play();
+        yield return new WaitForSeconds(2f);
+        src.clip = soundHook;
+        src.Play();
 
-        while (hook.transform.position != bagPos2)
+        while (objectHook.transform.position != dragPositionBag2)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, bagPos2, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dragPositionBag2, step);
             yield return null;
         }
+
+        Destroy(bag);
+        objectHook.transform.position = positionHook;
+        isMoving = false;
     }
 
 }

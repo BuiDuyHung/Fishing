@@ -5,58 +5,63 @@ using UnityEngine.UI;
 
 public class MoveHookToShoe : HookController
 {
-    public Vector3 shoePos1;
-    public Vector3 shoePos2;
-    public Vector3 dragShoe1;
-    public Vector3 dragShoe2;
-
-    public GameObject hook;
+    public AudioSource src;
+    public AudioClip shoeSound;
 
     private void OnMouseDown()
     {
         StartCoroutine(movePositionShoe());
+
     }
 
     public override IEnumerator movePositionShoe()
     {
         isMoving = true;
-        while (hook.transform.position != shoePos1)
+        while (objectHook.transform.position != shoePosition1)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, shoePos1, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, shoePosition1, step);
             yield return null;
         }
+        
+        yield return new WaitForSeconds(0.2f);
 
-        yield return new WaitForSeconds(0.5f);
-        isMoving = true;
-
-        while (hook.transform.position != shoePos2)
+        while (objectHook.transform.position != shoePosition2)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, shoePos2, step);
-            yield return null;
-        }
-
-        yield return new WaitForSeconds(0.5f);
-
-        while (hook.transform.position != dragShoe1)
-        {
-            float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, dragShoe1, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, shoePosition2, step);
             yield return null;
         }
 
         yield return new WaitForSeconds(1f);
+        src.clip = soundHook;
+        src.Play();
 
-        while (hook.transform.position != dragShoe2)
+        while (objectHook.transform.position != dragPositionShoe1)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, dragShoe2, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dragPositionShoe1, step);
             yield return null;
         }
 
-        isMoving = false;
+        yield return new WaitForSeconds(0.5f);
+        src.clip = shoeSound;
+        src.Play();
+        yield return new WaitForSeconds(2f);
+        src.clip = soundHook;
+        src.Play();
+
+        while (objectHook.transform.position != dragPositionShoe2)
+        {
+            float step = speed * Time.deltaTime;
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dragPositionShoe2, step);
+            yield return null;
+        }
+
         Destroy(shoe);
+        objectHook.transform.position = positionHook;
+        isMoving = false;
     }
+
 
 }

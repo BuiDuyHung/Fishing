@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class MoveHookToHat : HookController
 {
-    public Vector3 hatPos1;
-    public Vector3 hatPos2;
-    public GameObject hook;
+    public AudioSource src;
+    public AudioClip hatSound;
 
     private void OnMouseDown()
     {
@@ -16,21 +15,50 @@ public class MoveHookToHat : HookController
     public override IEnumerator movePositionHat()
     {
         isMoving = true;
-        while (hook.transform.position != hatPos1)
+        while (objectHook.transform.position != hatPosition1)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, hatPos1, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, hatPosition1, step);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        while (objectHook.transform.position != hatPosition2)
+        {
+            float step = speed * Time.deltaTime;
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, hatPosition2, step);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+        src.clip = soundHook;
+        src.Play();
+
+        while (objectHook.transform.position != dragPositionHat1)
+        {
+            float step = speed * Time.deltaTime;
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dragPositionHat1, step);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.5f);
-        isMoving = true;
+        src.clip = hatSound;
+        src.Play();
+        yield return new WaitForSeconds(2f);
+        src.clip = soundHook;
+        src.Play();
 
-        while (hook.transform.position != hatPos2)
+        while (objectHook.transform.position != dragPositionHat2)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, hatPos2, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dragPositionHat2, step);
             yield return null;
         }
+
+        Destroy(hat);
+        objectHook.transform.position = positionHook;
+        isMoving = false;
+        
     }
 }

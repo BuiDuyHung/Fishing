@@ -8,31 +8,27 @@ public class NextCamera : MonoBehaviour
 {
     public CinemachineVirtualCamera virtualCamera1;
     public CinemachineVirtualCamera virtualCamera2;
-
-    private void Start()
-    {
-        
-    }
+    private bool isCamera = true;
 
     private void Update()
     {
-        
         if (Input.GetMouseButtonDown(0))
         {
-            virtualCamera1.enabled = false;
-            virtualCamera2.enabled = true;
-            /*if (isCamera1Active)
+            //virtualCamera1.enabled = false;
+            // virtualCamera2.enabled = true;
+            if (isCamera)
             {
                 virtualCamera1.enabled = false;
                 virtualCamera2.enabled = true;
-                isCamera1Active = false;
+                isCamera = false;
             }
-            else
+            /*else
             {
                 virtualCamera1.enabled = true;
                 virtualCamera2.enabled = false;
-                isCamera1Active = true;
+                isCamera = true;
             }*/
         }
+        
     }
 }

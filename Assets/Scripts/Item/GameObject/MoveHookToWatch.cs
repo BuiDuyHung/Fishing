@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class MoveHookToWatch : HookController
 {
-    public Vector3 watchPos1;
-    public Vector3 watchPos2;
-    public GameObject hook;
+    public AudioSource src;
+    public AudioClip watchSound;
 
     private void OnMouseDown()
     {
@@ -16,21 +15,50 @@ public class MoveHookToWatch : HookController
     public override IEnumerator movePositionWatch()
     {
         isMoving = true;
-        while (hook.transform.position != watchPos1)
+        while (objectHook.transform.position != watchPosition1)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, watchPos1, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, watchPosition1, step);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(0.2f);
+
+        while (objectHook.transform.position != watchPosition2)
+        {
+            float step = speed * Time.deltaTime;
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, watchPosition2, step);
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1f);
+        src.clip = soundHook;
+        src.Play();
+
+        while (objectHook.transform.position != dargPositionWatch1)
+        {
+            float step = speed * Time.deltaTime;
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dargPositionWatch1, step);
             yield return null;
         }
 
         yield return new WaitForSeconds(0.5f);
-        isMoving = true;
+        src.clip = watchSound;
+        src.Play();
+        yield return new WaitForSeconds(2f);
+        src.clip = soundHook;
+        src.Play();
 
-        while (hook.transform.position != watchPos2)
+        while (objectHook.transform.position != dargPositionWatch2)
         {
             float step = speed * Time.deltaTime;
-            hook.transform.position = Vector3.MoveTowards(hook.transform.position, watchPos2, step);
+            objectHook.transform.position = Vector3.MoveTowards(objectHook.transform.position, dargPositionWatch2, step);
             yield return null;
         }
+
+        Destroy(watch);
+        objectHook.transform.position = positionHook;
+        isMoving = false;
+        
     }
 }
