@@ -15,6 +15,7 @@ public class GameController : MonoBehaviour
     public GameObject afternoon;
     private float currentTime = 5f;
 
+    
     //public TextMeshProUGUI txtGame;
 
     //sound
@@ -26,18 +27,11 @@ public class GameController : MonoBehaviour
     
 
     public GameObject objectHook;
-    private int count = 0;
     private bool isCamera = true;
 
     protected bool isMoving = false;
     protected bool isDraggingObject = false;
     protected bool isDragging = false;
-
-
-    //public GameObject shoe;
-    //public GameObject bag;
-    //public GameObject watch;
-    //public GameObject hat;
 
     protected Vector3 positionHook = new Vector3(1.2f, -5f, 0);
 
@@ -84,44 +78,6 @@ public class GameController : MonoBehaviour
 
         }
 
-        if (count == 4)
-        {
-            afternoon.SetActive(true);
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                objectHook.SetActive(false);
-                boatEnd.SetActive(true);
-
-                camera1.enabled = true;
-                camera2.enabled = false;
-                isCamera = false;
-
-                //set text
-                //txtGame.SetText("Victory");
-
-            }
-        }
-
-
-        if (camera2 != null)
-        {
-            if (camera2.enabled && !isMoving)
-            {
-                StartCoroutine(MovePosition());
-            }
-        }
-
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("shoe") || collision.CompareTag("bag") || collision.CompareTag("watch") || collision.CompareTag("hat"))
-        {
-            collision.transform.SetParent(transform);
-            count++;
-        }
-
     }
 
     
@@ -138,7 +94,7 @@ public class GameController : MonoBehaviour
 
     public virtual IEnumerator MovePosition()
     {
-        yield return new WaitForSeconds(2f);
+        yield return null;
     }
 
     public virtual IEnumerator movePositionShoe()

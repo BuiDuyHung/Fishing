@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class BoatEnd : GameController
 {
+    public bool isMovingBoat = false;
+
 
     private void Update()
     {
-        StartCoroutine(moveBoatEnd());
+        if (camera1 != null)
+        {
+            if (camera1.enabled && !isMoving)
+            {
+                StartCoroutine(moveBoatEnd());
+            }
+        }
+       
     }
 
     public override IEnumerator moveBoatEnd()
     {
         isMoving = true;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(7f);
 
         while (boatEnd.transform.position != endPositionBoat)
         {

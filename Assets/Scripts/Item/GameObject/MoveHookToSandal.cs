@@ -15,7 +15,15 @@ public class MoveHookToSandal : GameController
     private void OnMouseDown()
     {
         StartCoroutine(movePositionShoe());
+        if (camera2 != null)
+        {
+            if (camera2.enabled && !isMoving)
+            {
+                StartCoroutine(MovePosition());
+            }
+        }
     }
+
 
 
     public override IEnumerator movePositionShoe()

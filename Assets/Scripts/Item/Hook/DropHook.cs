@@ -6,6 +6,48 @@ public class DropHook : GameController
 {
     public AudioSource src;
     public AudioClip learnSound;
+    private int countOb = 0;
+
+
+    private void Update()
+    {
+        if (camera2 != null)
+        {
+            if (camera2.enabled && !isMoving)
+            {
+                StartCoroutine(MovePosition());
+            }
+        }
+
+        if (countOb == 4)
+        {
+            afternoon.SetActive(true);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                objectHook.SetActive(false);
+                boatEnd.SetActive(true);
+
+                camera1.enabled = true;
+                camera2.enabled = false;
+
+                //set text
+                //txtGame.SetText("Victory");
+
+            }
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("shoe") || collision.CompareTag("bag") || collision.CompareTag("watch") || collision.CompareTag("hat"))
+        {
+            collision.transform.SetParent(transform);
+            countOb++;
+        }
+
+    }
+
 
     public override IEnumerator MovePosition()
     {
