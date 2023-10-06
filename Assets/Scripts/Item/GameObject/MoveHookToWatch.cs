@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class MoveHookToWatch : HookController
+public class MoveHookToWatch : GameController
 {
     public AudioSource src;
     public AudioClip watchSound;
+    public TextMeshProUGUI txtWatch;
+    public GameObject watch;
 
     private void OnMouseDown()
     {
         StartCoroutine(movePositionWatch());
+
     }
 
     public override IEnumerator movePositionWatch()
@@ -43,9 +47,12 @@ public class MoveHookToWatch : HookController
         }
 
         yield return new WaitForSeconds(0.5f);
+        txtWatch.SetText("WATCH");
         src.clip = watchSound;
         src.Play();
+
         yield return new WaitForSeconds(2f);
+        txtWatch.SetText("");
         src.clip = soundHook;
         src.Play();
 
@@ -59,6 +66,5 @@ public class MoveHookToWatch : HookController
         Destroy(watch);
         objectHook.transform.position = positionHook;
         isMoving = false;
-        
     }
 }

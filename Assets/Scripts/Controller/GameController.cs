@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Cinemachine;
 using System;
+using TMPro;
 
-public class HookController : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     public CinemachineVirtualCamera camera1;
     public CinemachineVirtualCamera camera2;
@@ -12,6 +13,9 @@ public class HookController : MonoBehaviour
     public GameObject boatEnd;
     public GameObject morning;
     public GameObject afternoon;
+    private float currentTime = 5f;
+
+    //public TextMeshProUGUI txtGame;
 
     //sound
     public AudioClip soundHook;
@@ -19,30 +23,37 @@ public class HookController : MonoBehaviour
 
     protected float speed = 4;
     public MeshRenderer meshHook;
+    
+
     public GameObject objectHook;
     private int count = 0;
     private bool isCamera = true;
 
     protected bool isMoving = false;
+    protected bool isDraggingObject = false;
+    protected bool isDragging = false;
 
-    public GameObject shoe;
-    public GameObject bag;
-    public GameObject watch;
-    public GameObject hat;
+
+    //public GameObject shoe;
+    //public GameObject bag;
+    //public GameObject watch;
+    //public GameObject hat;
 
     protected Vector3 positionHook = new Vector3(1.2f, -5f, 0);
-    private Vector3 dragHook = new Vector3(1.2f, 1f, 0);
-    private Vector3 endPositionBoat = new Vector3(1f, 6.68f, 0);
+
+    protected Vector3 endPositionBoat = new Vector3(17f, 2.5f, 0);
+    protected Vector3 positionCamera = new Vector3(0.89f, -5.42f, -16.59399f);
 
     // position shoe
     protected Vector3 shoePosition1 = new Vector3(-1.9f, -5f, 0);
     protected Vector3 shoePosition2 = new Vector3(-1.9f, -8.8f, 0);
     protected Vector3 dragPositionShoe1 = new Vector3(-1.9f, -5f, 0);
-    protected Vector3 dragPositionShoe2 = new Vector3(-1.9f, 1, 0);
+    protected Vector3 dragPositionShoe2 = new Vector3(-1.9f, 1f, 0);
+    protected Vector3 dragPositionShoe3 = new Vector3(1.2f, 1f, 0);
 
     // position bag
     protected Vector3 bagPosition2 = new Vector3(1.2f, -8.5f, 0);
-    protected Vector3 dargPositionBag1 = new Vector3(1.2f, -5f, 0);
+    protected Vector3 dargPositionBag1 = new Vector3(1.2f, -4f, 0);
     protected Vector3 dragPositionBag2 = new Vector3(1.2f, 1f, 0);
 
     // position watch
@@ -60,93 +71,69 @@ public class HookController : MonoBehaviour
 
     void Update()
     {
+        currentTime -= 1 * Time.deltaTime;
+
         if (Input.GetMouseButtonDown(0))
         {
-            if (isCamera)
+            if (isCamera)   
             {
                 camera1.enabled = false;
                 camera2.enabled = true;
                 isCamera = false;
             }
-            else if(count == 4)
+
+        }
+
+        if (count == 4)
+        {
+            afternoon.SetActive(true);
+
+            if (Input.GetMouseButtonDown(0))
             {
-                Destroy(objectHook);
-                afternoon.SetActive(true);
-                boatStart.SetActive(false);
+                objectHook.SetActive(false);
                 boatEnd.SetActive(true);
+
                 camera1.enabled = true;
                 camera2.enabled = false;
-                isCamera = true;
+                isCamera = false;
 
-                if (camera1.enabled && !isMoving)
-                {
-                    StartCoroutine(endBoat());
-                }
+                //set text
+                //txtGame.SetText("Victory");
+
             }
         }
+
 
         if (camera2 != null)
         {
             if (camera2.enabled && !isMoving)
             {
-                
                 StartCoroutine(MovePosition());
             }
         }
 
     }
 
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("shoe"))
+        if (collision.CompareTag("shoe") || collision.CompareTag("bag") || collision.CompareTag("watch") || collision.CompareTag("hat"))
         {
             collision.transform.SetParent(transform);
             count++;
         }
-        else if (collision.CompareTag("bag"))
-        {
-            collision.transform.SetParent(transform);
-            count++;
-        }
-        else if (collision.CompareTag("watch"))
-        {
-            collision.transform.SetParent(transform);
-            count++;
-        }
-        else if (collision.CompareTag("hat"))
-        {
-            collision.transform.SetParent(transform);
-            count++;
-        }
-        
+
     }
 
-    public IEnumerator dragHookend()
-    {
-        isMoving = true;
-        yield return new WaitForSeconds(2f);
-        meshHook.enabled = true;
+    
 
-        while (transform.position != dragHook)
-        {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, dragHook, step);
-            yield return null;
-        }
+    public virtual IEnumerator moveCamera()
+    {
+        yield return new WaitForSeconds(2f);
     }
 
-    private IEnumerator endBoat()
+    public virtual IEnumerator moveBoatEnd()
     {
-        isMoving = true;
         yield return new WaitForSeconds(2f);
-
-        while (transform.position != endPositionBoat)
-        {
-            float step = speed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, endPositionBoat, step);
-            yield return null;
-        }
     }
 
     public virtual IEnumerator MovePosition()

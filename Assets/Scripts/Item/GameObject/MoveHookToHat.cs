@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class MoveHookToHat : HookController
+public class MoveHookToHat : GameController
 {
     public AudioSource src;
     public AudioClip hatSound;
+    public TextMeshProUGUI txtHat;
+    public GameObject hat;
 
     private void OnMouseDown()
     {
@@ -43,9 +46,12 @@ public class MoveHookToHat : HookController
         }
 
         yield return new WaitForSeconds(0.5f);
+        txtHat.SetText("HAT");
         src.clip = hatSound;
         src.Play();
+
         yield return new WaitForSeconds(2f);
+        txtHat.SetText("");
         src.clip = soundHook;
         src.Play();
 
@@ -59,6 +65,5 @@ public class MoveHookToHat : HookController
         Destroy(hat);
         objectHook.transform.position = positionHook;
         isMoving = false;
-        
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropHook : HookController
+public class DropHook : GameController
 {
     public AudioSource src;
     public AudioClip learnSound;

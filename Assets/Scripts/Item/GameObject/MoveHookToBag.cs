@@ -1,11 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
-public class MoveHookToBag : HookController
+public class MoveHookToBag : GameController
 {
     public AudioSource src;
     public AudioClip BagSound;
+    public TextMeshProUGUI txtBag;
+    public GameObject bag;
 
     private void OnMouseDown()
     {
@@ -14,6 +17,7 @@ public class MoveHookToBag : HookController
 
     public override IEnumerator movePositionBag()
     {
+        isDraggingObject = true;
         isMoving = true;
         yield return new WaitForSeconds(0.2f);
 
@@ -36,11 +40,14 @@ public class MoveHookToBag : HookController
         }
 
         yield return new WaitForSeconds(0.5f);
+        txtBag.SetText("HANDBAG");
         src.clip = BagSound;
         src.Play();
+
         yield return new WaitForSeconds(2f);
         src.clip = soundHook;
         src.Play();
+        txtBag.SetText("");
 
         while (objectHook.transform.position != dragPositionBag2)
         {
@@ -49,9 +56,11 @@ public class MoveHookToBag : HookController
             yield return null;
         }
 
+        
         Destroy(bag);
         objectHook.transform.position = positionHook;
         isMoving = false;
+        isDraggingObject = false;
     }
 
 }
