@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public GameObject boatEnd;
     public GameObject morning;
     public GameObject afternoon;
-    private float currentTime = 5f;
+    //private float currentTime = 5f;
 
     
     //public TextMeshProUGUI txtGame;
@@ -65,7 +65,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        currentTime -= 1 * Time.deltaTime;
+        //currentTime -= 1 * Time.deltaTime;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -80,7 +80,6 @@ public class GameController : MonoBehaviour
 
     }
 
-    
 
     public virtual IEnumerator moveCamera()
     {

@@ -31,9 +31,6 @@ public class DropHook : GameController
                 camera1.enabled = true;
                 camera2.enabled = false;
 
-                //set text
-                //txtGame.SetText("Victory");
-
             }
         }
     }
@@ -48,6 +45,7 @@ public class DropHook : GameController
 
     }
 
+    
 
     public override IEnumerator MovePosition()
     {
@@ -65,7 +63,7 @@ public class DropHook : GameController
             yield return null;
         }
 
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(0.3f);
         src.clip = learnSound;
         src.Play();
     }

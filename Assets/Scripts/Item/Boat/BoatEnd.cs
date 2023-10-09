@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class BoatEnd : GameController
 {
-    public bool isMovingBoat = false;
+    public AudioSource src;
+    public AudioClip victory;
 
 
     private void Update()
@@ -21,6 +22,8 @@ public class BoatEnd : GameController
 
     public override IEnumerator moveBoatEnd()
     {
+        src.clip = victory;
+        src.Play();
         isMoving = true;
         yield return new WaitForSeconds(7f);
 

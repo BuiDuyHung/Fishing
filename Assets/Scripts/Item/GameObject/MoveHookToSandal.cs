@@ -25,7 +25,6 @@ public class MoveHookToSandal : GameController
     }
 
 
-
     public override IEnumerator movePositionShoe()
     {
         isMoving = true;
