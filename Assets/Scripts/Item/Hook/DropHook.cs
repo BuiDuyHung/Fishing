@@ -45,8 +45,6 @@ public class DropHook : GameController
 
     }
 
-    
-
     public override IEnumerator MovePosition()
     {
         isMoving = true;
